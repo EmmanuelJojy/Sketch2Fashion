@@ -15,11 +15,11 @@ model_dict = torch.load(model_path)
 new_dict = OrderedDict()
 for k, v in model_dict.items():
     # load_state_dict expects keys with prefix 'module.'
-    new_dict["module." + k] = v
+    new_dict[k] = v
 
 # make sure you pass the correct parameters to the define_G method
 generator_model = define_G(input_nc=3, output_nc=3, ngf=64, netG="resnet_9blocks",
-                           norm="instance", use_dropout=False, init_gain=0.02, gpu_ids=[0])
+                           norm="instance", use_dropout=False, init_gain=0.02, gpu_ids=[])
 generator_model.load_state_dict(new_dict)
 
 # Set the model to evaluation mode
