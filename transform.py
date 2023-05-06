@@ -35,7 +35,7 @@ transform = transforms.Compose([
 
 
 def sketch2fashion(input_image_path, output_image_path):
-    input_image = Image.open(input_image_path)
+    input_image = Image.open('static/' + input_image_path)
 
     # Preprocess the input image
     input_tensor = transform(input_image).unsqueeze(0)
@@ -47,9 +47,9 @@ def sketch2fashion(input_image_path, output_image_path):
     # Postprocess the output image
     output_image = transforms.functional.to_pil_image(
         output_tensor.squeeze().cpu())
-    output_image.save(output_image_path)
+    output_image.save('static/' + output_image_path)
 
 
-src = "testA.png"
-tar = "testB.png"
-sketch2fashion(src, tar)
+# src = "testA.jpg"
+# tar = "testB.jpg"
+# sketch2fashion(src, tar)
