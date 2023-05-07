@@ -5,13 +5,13 @@ import torchvision.transforms as transforms
 from networks import define_G
 
 # Define the path to your pre-trained model
-model_path = "model.pth"
+MODEL_PATH = "model.pth"
 
 # Define the device to use for computations
 # device = torch.device('cpu')
 
 # Load the pre-trained model
-model_dict = torch.load(model_path)
+model_dict = torch.load(MODEL_PATH)
 new_dict = OrderedDict()
 for k, v in model_dict.items():
     # load_state_dict expects keys with prefix 'module.'
@@ -35,7 +35,8 @@ transform = transforms.Compose([
 
 
 def sketch2fashion(input_image_path, output_image_path):
-    input_image = Image.open('static/' + input_image_path)
+    input_image = Image.open(input_image_path)
+    image_size = input_image.size
 
     # Preprocess the input image
     input_tensor = transform(input_image).unsqueeze(0)
@@ -47,9 +48,11 @@ def sketch2fashion(input_image_path, output_image_path):
     # Postprocess the output image
     output_image = transforms.functional.to_pil_image(
         output_tensor.squeeze().cpu())
-    output_image.save('static/' + output_image_path)
+    
+    output_image = output_image.resize(image_size)
+    output_image.save(output_image_path)
 
 
-# src = "testA.jpg"
-# tar = "testB.jpg"
-# sketch2fashion(src, tar)
+# SRC = "testA.png"
+# TAR = "testB.png"
+# sketch2fashion(SRC, TAR)
