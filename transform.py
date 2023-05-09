@@ -1,3 +1,4 @@
+import os
 from collections import OrderedDict
 import torch
 from PIL import Image
@@ -10,7 +11,6 @@ models = {
     'resnet': {'path': 'models/cyclegan-resnet.pth', 'input_nc': 3, 'output_nc': 3, 'netG': "resnet_9blocks", 'norm': "instance", },
     'unet': {'path': 'models/cyclegan-unet.pth', 'input_nc': 3, 'output_nc': 3, 'netG': "unet_256", 'norm': "instance", },
     'pix2pix': {'path': 'models/pix2pix.pth', 'input_nc': 3, 'output_nc': 3, 'netG': "unet_256", 'norm': "batch", },
-    'color': {'path': 'models/pix2pix-color.pth', 'input_nc': 1, 'output_nc': 2, 'netG': "unet_256", 'norm': "instance", },
 }
 
 transform = transforms.Compose([
@@ -62,10 +62,19 @@ print("CycleGAN (Gen: U -NET): Ready", end='\n\n')
 pix2pix = create_generator(models['pix2pix'])
 print("Pix 2 Pix (Gen: U NET): Ready", end='\n\n')
 
-# color = create_generator(models['color'])
-# print("Pix 2 Pix (Var: Color): Ready", end='\n\n')
 
+# RUNNER
 
-sketch2fashion(resnet, input_image_path='test.jpg', output_image_path='resnet.jpg')
-sketch2fashion(resnet, input_image_path='test.jpg', output_image_path='unet.jpg')
-sketch2fashion(resnet, input_image_path='test.jpg', output_image_path='pix2pix.jpg')
+sketch2fashion(resnet, input_image_path='test.jpg', output_image_path='out_resnet.jpg')
+sketch2fashion(unet, input_image_path='test.jpg', output_image_path='out_unet.jpg')
+sketch2fashion(pix2pix, input_image_path='test.jpg', output_image_path='out_pix2pix.jpg')
+
+# import time
+
+# for file_name in os.listdir('images'):
+#     if file_name.endswith(".png"):
+#         file_path = 'images/' + file_name
+#         sketch2fashion(resnet, input_image_path=file_path, output_image_path='out_resnet.jpg')
+#         sketch2fashion(unet, input_image_path=file_path, output_image_path='out_unet.jpg')
+#         sketch2fashion(pix2pix, input_image_path=file_path, output_image_path='out_pix2pix.jpg')
+#         time.sleep(2)
