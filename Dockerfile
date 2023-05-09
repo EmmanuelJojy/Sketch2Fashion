@@ -1,7 +1,12 @@
-FROM python
+FROM python:slim
+WORKDIR /app
 
-WORKDIR /Sketch2Fashion
-COPY requirements.txt .
-RUN pip3 install -r requirements.txt
-COPY . .
-CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
+RUN apt-get update && apt-get install -y git
+RUN pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+RUN pip3 install streamlit
+
+RUN git clone https://github.com/streamlit/streamlit-example.git docker .
+
+EXPOSE 8501
+
+ENTRYPOINT ["streamlit", "run", "main.py", "--server.port=8501", "--server.address=0.0.0.0"]
