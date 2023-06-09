@@ -1,4 +1,4 @@
-import os
+import os, shutil
 from collections import OrderedDict
 import torch
 from PIL import Image
@@ -69,22 +69,23 @@ print("CycleGAN (Gen: Resnet): Ready", end='\n\n')
 unet = create_generator(models['unet'])
 print("CycleGAN (Gen: U -NET): Ready", end='\n\n')
 
-unet_cycle = create_generator(models['unet_new'], ngf=128)
-print("CycleGAN (Gen: UNETx2): Ready", end='\n\n')
+# unet_cycle = create_generator(models['unet_new'], ngf=128)
+# print("CycleGAN (Gen: UNETx2): Ready", end='\n\n')
 
 
 # RUNNER
 
-sketch2fashion(resnet, input_image_path='test.jpg', output_image_path='out_resnet.jpg')
-sketch2fashion(unet, input_image_path='test.jpg', output_image_path='out_unet.jpg')
-sketch2fashion(unet_cycle, input_image_path='test.jpg', output_image_path='out_unet_cycle.jpg')
+# sketch2fashion(resnet, input_image_path='test.jpg', output_image_path='out_resnet.jpg')
+# sketch2fashion(unet, input_image_path='test.jpg', output_image_path='out_unet.jpg')
+# sketch2fashion(unet_cycle, input_image_path='test.jpg', output_image_path='out_unet_cycle.jpg')
 
-# import time
+import time
 
-# for file_name in os.listdir('images'):
-#     if file_name.endswith(".png"):
-#         file_path = 'images/' + file_name
-#         sketch2fashion(resnet, input_image_path=file_path, output_image_path='out_resnet.jpg')
-#         sketch2fashion(unet, input_image_path=file_path, output_image_path='out_unet.jpg')
-#         sketch2fashion(pix2pix, input_image_path=file_path, output_image_path='out_pix2pix.jpg')
-#         time.sleep(2)
+for file_name in os.listdir('images'):
+    if file_name.endswith(".png"):
+        file_path = 'images/' + file_name
+        shutil.copyfile(file_path, 'test.jpg')
+        sketch2fashion(resnet, input_image_path=file_path, output_image_path='out_resnet.jpg')
+        # sketch2fashion(unet, input_image_path=file_path, output_image_path='out_unet.jpg')
+        # sketch2fashion(pix2pix, input_image_path=file_path, output_image_path='out_pix2pix.jpg')
+        time.sleep(2)
